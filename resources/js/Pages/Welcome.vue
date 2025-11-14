@@ -38,10 +38,10 @@ defineProps({
             <!-- Hero Section (custom) -->
             <div class="bg-gradient-to-r from-sky-500 to-sky-600 rounded-2xl px-8 py-14 shadow-xl text-white mb-12 text-center">
                 <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">Lapak Mahasiswa</h1>
-                <p class="mt-3 text-sky-100 max-w-3xl mx-auto">Temukan dan jual kebutuhan kampus dengan mudah. Marketplace bernuansa biru ala Tokopedia untuk mahasiswa.</p>
+                <p class="mt-3 text-sky-100 max-w-3xl mx-auto">Temukan dan jual kebutuhan kampus dengan mudah.</p>
                 <div class="mt-6 flex flex-col md:flex-row gap-4 md:items-center">
                     <div class="flex-1 relative max-w-3xl mx-auto">
-                        <input type="text" placeholder="Cari produk (contoh: buku akuntansi, kalkulator)" class="w-full rounded-xl border border-sky-300 bg-white/95 px-5 py-3 pr-14 text-sky-800 placeholder-sky-400 shadow focus:outline-none focus:ring-2 focus:ring-white focus:border-white" />
+                        <input type="text" placeholder="Cari produk" class="w-full rounded-xl border border-sky-300 bg-white/95 px-5 py-3 pr-14 text-sky-800 placeholder-sky-400 shadow focus:outline-none focus:ring-2 focus:ring-white focus:border-white" />
                         <button class="absolute top-1/2 -translate-y-1/2 right-2 bg-sky-700 hover:bg-sky-800 active:bg-sky-900 text-white font-semibold px-4 py-2 rounded-lg shadow">Cari</button>
                     </div>
                     <div class="flex flex-wrap gap-2 justify-center">
