@@ -21,6 +21,25 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        // Seller fields
+        'shop_name',
+        'shop_description',
+        'pic_name',
+        'pic_phone',
+        'pic_email',
+        'pic_address',
+        'rt',
+        'rw',
+        'kelurahan',
+        'kota',
+        'provinsi',
+        'pic_id_number',
+        'pic_id_photo_path',
+        'pic_photo_path',
+        'seller_status',
+        'rejection_reason',
+        'activation_token',
+        'is_admin',
     ];
 
     /**
@@ -40,5 +59,11 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_admin' => 'boolean',
     ];
+
+    public function isApprovedSeller(): bool
+    {
+        return $this->seller_status === 'approved';
+    }
 }

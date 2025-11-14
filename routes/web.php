@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SellerRegistrationController;
+use App\Http\Controllers\AdminSellerVerificationController;
+use App\Http\Controllers\SellerActivationController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -36,3 +39,18 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+// Seller registration (public)
+Route::get('/seller/register', [SellerRegistrationController::class, 'create'])->name('seller.register');
+Route::post('/seller/register', [SellerRegistrationController::class, 'store'])->name('seller.register.store');
+
+// Activation link
+Route::get('/seller/activate/{token}', [SellerActivationController::class, 'activate'])->name('seller.activate');
+
+// Admin seller verification (basic auth protection). Ideally add admin middleware.
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/sellers', [AdminSellerVerificationController::class, 'index'])->name('admin.sellers.index');
+    Route::get('/admin/sellers/{user}', [AdminSellerVerificationController::class, 'show'])->name('admin.sellers.show');
+    Route::post('/admin/sellers/{user}/approve', [AdminSellerVerificationController::class, 'approve'])->name('admin.sellers.approve');
+    Route::post('/admin/sellers/{user}/reject', [AdminSellerVerificationController::class, 'reject'])->name('admin.sellers.reject');
+});
