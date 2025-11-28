@@ -15,11 +15,24 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $products = \App\Models\Product::latest()->take(12)->get();
-    return view('home', compact('products'));
+    $category = request('category');
+    $query = \App\Models\Product::latest();
+    
+    if ($category && in_array($category, ['elektronik', 'fashion', 'makanan', 'akademik', 'rumahan'])) {
+        $query->where('category', $category);
+    }
+    
+    $products = $query->take(12)->get();
+    $selectedCategory = $category;
+    
+    return view('home', compact('products', 'selectedCategory'));
 })->name('home');
 
 Route::get('/dashboard', function () {
+    // Redirect admin to admin sellers dashboard
+    if (auth()->user()->is_admin) {
+        return redirect()->route('admin.sellers.index');
+    }
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 

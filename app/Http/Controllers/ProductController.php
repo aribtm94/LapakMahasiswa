@@ -18,6 +18,7 @@ class ProductController extends Controller
     {
         $data = $request->validate([
             'name'        => 'required|string|max:255',
+            'category'    => 'required|string|in:elektronik,fashion,makanan,akademik,rumahan',
             'description' => 'nullable|string',
             'shop_name'   => 'nullable|string|max:255',
             'condition'   => 'nullable|string|max:50',
@@ -34,6 +35,7 @@ class ProductController extends Controller
         $product = Product::create([
             'user_id'        => $user->id,
             'name'           => $data['name'],
+            'category'       => $data['category'],
             'description'    => $data['description'] ?? null,
             'shop_name'      => $data['shop_name'] ?? $user->shop_name,
             'condition'      => $data['condition'] ?? 'baru',

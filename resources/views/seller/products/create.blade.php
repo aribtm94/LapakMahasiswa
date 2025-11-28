@@ -30,6 +30,18 @@
             </div>
 
             <div>
+                <label class="block text-sm font-medium text-[#0e171b] mb-1">Kategori</label>
+                <select name="category" class="w-full border border-[#d0e0e7] rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-primary" required>
+                    <option value="">-- Pilih Kategori --</option>
+                    <option value="elektronik" {{ old('category') === 'elektronik' ? 'selected' : '' }}>Elektronik</option>
+                    <option value="fashion" {{ old('category') === 'fashion' ? 'selected' : '' }}>Fashion</option>
+                    <option value="makanan" {{ old('category') === 'makanan' ? 'selected' : '' }}>Makanan</option>
+                    <option value="akademik" {{ old('category') === 'akademik' ? 'selected' : '' }}>Akademik</option>
+                    <option value="rumahan" {{ old('category') === 'rumahan' ? 'selected' : '' }}>Rumahan</option>
+                </select>
+            </div>
+
+            <div>
                 <label class="block text-sm font-medium text-[#0e171b] mb-1">Deskripsi</label>
                 <textarea name="description" rows="4" class="w-full border border-[#d0e0e7] rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-primary">{{ old('description') }}</textarea>
             </div>

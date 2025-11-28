@@ -13,7 +13,8 @@ class Product extends Model
 
     protected $fillable = [
         'user_id',          
-        'name',             
+        'name',
+        'category',
         'description',      
         'shop_name',        
         'condition',        
@@ -24,8 +25,19 @@ class Product extends Model
         'reviews_count',    
         'sold_count',
         'stock',
-        'category_id',
     ];
+
+    // Daftar kategori yang tersedia
+    public static function categories(): array
+    {
+        return [
+            'elektronik' => 'Elektronik',
+            'fashion' => 'Fashion',
+            'makanan' => 'Makanan',
+            'akademik' => 'Akademik',
+            'rumahan' => 'Rumahan',
+        ];
+    }
 
     protected $casts = [
         'price'          => 'integer',

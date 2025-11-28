@@ -67,7 +67,7 @@
         <section class="bg-primary rounded-2xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between">
             <div class="text-white text-center md:text-left mb-8 md:mb-0">
                 <h1 class="text-3xl md:text-4xl font-black font-display">
-                    Males Belanja offline?
+                    Ingin Belanja Terdekat?
                 </h1>
                 <p class="text-2xl md:text-3xl font-bold font-display mt-2">
                     Yuk pakai LapakMahasiswa aja!!!!
@@ -86,11 +86,71 @@
             </div>
         </section>
 
+        <!-- Kategori Section -->
+        <section class="mt-12">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold font-display text-[#0e171b] dark:text-white">
+                    Kategori
+                </h2>
+                @if(isset($selectedCategory) && $selectedCategory)
+                    <a href="{{ route('home') }}" class="text-sm text-primary hover:underline flex items-center gap-1">
+                        <span class="material-symbols-outlined text-lg">close</span>
+                        Reset Filter
+                    </a>
+                @endif
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+                <!-- Elektronik -->
+                <a href="{{ route('home', ['category' => 'elektronik']) }}" class="flex flex-col items-center p-6 bg-white dark:bg-gray-800 border-2 {{ (isset($selectedCategory) && $selectedCategory === 'elektronik') ? 'border-primary bg-primary/5' : 'border-[#d0e0e7] dark:border-gray-700' }} rounded-2xl hover:shadow-lg hover:border-primary transition-all group">
+                    <div class="w-16 h-16 {{ (isset($selectedCategory) && $selectedCategory === 'elektronik') ? 'bg-primary/20' : 'bg-blue-100 dark:bg-blue-900/30' }} rounded-full flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors">
+                        <span class="material-symbols-outlined text-3xl text-primary">devices</span>
+                    </div>
+                    <span class="text-sm font-semibold text-[#0e171b] dark:text-white text-center">Elektronik</span>
+                </a>
+                
+                <!-- Fashion -->
+                <a href="{{ route('home', ['category' => 'fashion']) }}" class="flex flex-col items-center p-6 bg-white dark:bg-gray-800 border-2 {{ (isset($selectedCategory) && $selectedCategory === 'fashion') ? 'border-primary bg-primary/5' : 'border-[#d0e0e7] dark:border-gray-700' }} rounded-2xl hover:shadow-lg hover:border-primary transition-all group">
+                    <div class="w-16 h-16 {{ (isset($selectedCategory) && $selectedCategory === 'fashion') ? 'bg-primary/20' : 'bg-pink-100 dark:bg-pink-900/30' }} rounded-full flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors">
+                        <span class="material-symbols-outlined text-3xl text-primary">checkroom</span>
+                    </div>
+                    <span class="text-sm font-semibold text-[#0e171b] dark:text-white text-center">Fashion</span>
+                </a>
+                
+                <!-- Makanan -->
+                <a href="{{ route('home', ['category' => 'makanan']) }}" class="flex flex-col items-center p-6 bg-white dark:bg-gray-800 border-2 {{ (isset($selectedCategory) && $selectedCategory === 'makanan') ? 'border-primary bg-primary/5' : 'border-[#d0e0e7] dark:border-gray-700' }} rounded-2xl hover:shadow-lg hover:border-primary transition-all group">
+                    <div class="w-16 h-16 {{ (isset($selectedCategory) && $selectedCategory === 'makanan') ? 'bg-primary/20' : 'bg-orange-100 dark:bg-orange-900/30' }} rounded-full flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors">
+                        <span class="material-symbols-outlined text-3xl text-primary">restaurant</span>
+                    </div>
+                    <span class="text-sm font-semibold text-[#0e171b] dark:text-white text-center">Makanan</span>
+                </a>
+                
+                <!-- Akademik -->
+                <a href="{{ route('home', ['category' => 'akademik']) }}" class="flex flex-col items-center p-6 bg-white dark:bg-gray-800 border-2 {{ (isset($selectedCategory) && $selectedCategory === 'akademik') ? 'border-primary bg-primary/5' : 'border-[#d0e0e7] dark:border-gray-700' }} rounded-2xl hover:shadow-lg hover:border-primary transition-all group">
+                    <div class="w-16 h-16 {{ (isset($selectedCategory) && $selectedCategory === 'akademik') ? 'bg-primary/20' : 'bg-green-100 dark:bg-green-900/30' }} rounded-full flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors">
+                        <span class="material-symbols-outlined text-3xl text-primary">school</span>
+                    </div>
+                    <span class="text-sm font-semibold text-[#0e171b] dark:text-white text-center">Akademik</span>
+                </a>
+                
+                <!-- Rumahan -->
+                <a href="{{ route('home', ['category' => 'rumahan']) }}" class="flex flex-col items-center p-6 bg-white dark:bg-gray-800 border-2 {{ (isset($selectedCategory) && $selectedCategory === 'rumahan') ? 'border-primary bg-primary/5' : 'border-[#d0e0e7] dark:border-gray-700' }} rounded-2xl hover:shadow-lg hover:border-primary transition-all group">
+                    <div class="w-16 h-16 {{ (isset($selectedCategory) && $selectedCategory === 'rumahan') ? 'bg-primary/20' : 'bg-purple-100 dark:bg-purple-900/30' }} rounded-full flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors">
+                        <span class="material-symbols-outlined text-3xl text-primary">home</span>
+                    </div>
+                    <span class="text-sm font-semibold text-[#0e171b] dark:text-white text-center">Rumahan</span>
+                </a>
+            </div>
+        </section>
+
         <!-- Produk Terbaru Section -->
         <section class="mt-12 border border-[#d0e0e7] dark:border-gray-700 rounded-2xl p-8">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-2xl font-bold font-display text-[#0e171b] dark:text-white">
-                    Produk Terbaru
+                    @if(isset($selectedCategory) && $selectedCategory)
+                        Produk {{ ucfirst($selectedCategory) }}
+                    @else
+                        Produk Terbaru
+                    @endif
                 </h2>
                 <span class="text-sm text-[#4d8199]">{{ $products->count() }} produk</span>
             </div>
