@@ -22,10 +22,6 @@
         
         <!-- Action Buttons -->
         <div class="flex items-center space-x-4">
-            <button class="relative p-2 text-[#0e171b] dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full">
-                <span class="material-symbols-outlined">shopping_cart</span>
-                <span class="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">0</span>
-            </button>
             
             @auth
                 <!-- Profile Dropdown -->
