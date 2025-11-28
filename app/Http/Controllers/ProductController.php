@@ -4,10 +4,61 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductGuestReview;
+use App\Models\ProductPhoto;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    public function create()
+    {
+        return view('seller.products.create');
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'name'        => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'shop_name'   => 'nullable|string|max:255',
+            'condition'   => 'nullable|string|max:50',
+            'min_order'   => 'nullable|integer|min:1',
+            'showcase'    => 'nullable|string|max:255',
+            'price'       => 'required|integer|min:0',
+            'stock'       => 'nullable|integer|min:0',
+            'photos'      => 'required|array|min:1',
+            'photos.*'    => 'image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $user = $request->user();
+
+        $product = Product::create([
+            'user_id'        => $user->id,
+            'name'           => $data['name'],
+            'description'    => $data['description'] ?? null,
+            'shop_name'      => $data['shop_name'] ?? $user->shop_name,
+            'condition'      => $data['condition'] ?? 'baru',
+            'min_order'      => $data['min_order'] ?? 1,
+            'showcase'       => $data['showcase'] ?? null,
+            'price'          => $data['price'],
+            'average_rating' => 0,
+            'reviews_count'  => 0,
+            'sold_count'     => 0,
+            'stock'          => $data['stock'] ?? 0,
+        ]);
+
+        foreach ($request->file('photos') as $index => $file) {
+            $path = $file->store('products', 'public');
+
+            ProductPhoto::create([
+                'product_id' => $product->id,
+                'path'       => $path,
+                'is_cover'   => $index === 0,
+            ]);
+        }
+
+        return redirect()->route('products.show', $product)
+            ->with('status', 'Produk berhasil dibuat.');
+    }
     public function show(Product $product)
     {
         // hitung rating rata-rata dari review tamu

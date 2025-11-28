@@ -50,8 +50,14 @@
                     <span class="material-symbols-outlined">favorite</span>
                     <span>Wishlist</span>
                 </a>
+                @if(Auth::user()->seller_status === 'approved')
+                <a href="{{ route('seller.products.create') }}" class="flex items-center space-x-3 px-4 py-3 text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
+                    <span class="material-symbols-outlined">add_box</span>
+                    <span>Tambah Produk</span>
+                </a>
+                @endif
                 
-                @if(Auth::user()->role !== 'seller')
+                @if(Auth::user()->seller_status !== 'approved')
                 <div class="pt-4 border-t border-gray-200 dark:border-gray-700 mt-4">
                     <a href="{{ route('seller.register') }}" class="flex items-center space-x-3 px-4 py-3 text-green-700 bg-green-50 hover:bg-green-100 rounded-lg transition-colors">
                         <span class="material-symbols-outlined">storefront</span>
@@ -72,52 +78,63 @@
                 </div>
             @endif
 
-            <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-500 dark:text-gray-400 text-sm">Total Pesanan</p>
-                            <p class="text-3xl font-bold text-gray-800 dark:text-white mt-1">0</p>
-                        </div>
-                        <div class="h-12 w-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
-                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">shopping_cart</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-500 dark:text-gray-400 text-sm">Wishlist</p>
-                            <p class="text-3xl font-bold text-gray-800 dark:text-white mt-1">0</p>
-                        </div>
-                        <div class="h-12 w-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
-                            <span class="material-symbols-outlined text-red-600 dark:text-red-400">favorite</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-500 dark:text-gray-400 text-sm">Review</p>
-                            <p class="text-3xl font-bold text-gray-800 dark:text-white mt-1">0</p>
-                        </div>
-                        <div class="h-12 w-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center">
-                            <span class="material-symbols-outlined text-yellow-600 dark:text-yellow-400">star</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @php
+                $user = Auth::user();
+                $products = $user->products()->latest()->get();
+            @endphp
 
-            <!-- Welcome Card -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
-                <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Selamat Datang, {{ Auth::user()->name }}!</h2>
-                <p class="text-gray-600 dark:text-gray-400">
-                    Anda login sebagai <span class="font-medium text-primary">{{ Auth::user()->email }}</span>
-                </p>
-            </div>
+            @if($user->seller_status === 'approved')
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-800 dark:text-white">Produk Saya</h2>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Kelola katalog produk yang kamu tampilkan.</p>
+                    </div>
+                    <a href="{{ route('seller.products.create') }}" class="inline-flex items-center px-4 py-2 bg-primary text-white text-sm font-semibold rounded-full hover:opacity-90">
+                        <span class="material-symbols-outlined text-sm mr-1">add</span>
+                        Tambah Produk
+                    </a>
+                </div>
+
+                @if($products->isEmpty())
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm text-center text-gray-500 dark:text-gray-400">
+                        Belum ada produk. Mulai dengan menambahkan produk pertamamu.
+                    </div>
+                @else
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        @foreach($products as $product)
+                            <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col">
+                                @php
+                                    $photo = optional($product->photos->first())->path;
+                                @endphp
+                                <div class="w-full aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden mb-3 flex items-center justify-center">
+                                    @if($photo)
+                                        <img src="{{ asset('storage/'.$photo) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
+                                    @else
+                                        <span class="material-symbols-outlined text-4xl text-gray-300">image</span>
+                                    @endif
+                                </div>
+                                <h3 class="font-semibold text-gray-800 dark:text-white text-sm line-clamp-2 min-h-[2.5rem]">{{ $product->name }}</h3>
+                                <p class="mt-1 text-primary font-bold text-sm">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                                <p class="mt-1 text-xs text-gray-500">Etalase: {{ $product->showcase ?? '-' }}</p>
+                                <p class="mt-1 text-xs text-gray-500">Stok: {{ $product->stock ?? 0 }}</p>
+                                <a href="{{ route('products.show', $product) }}" class="mt-3 inline-flex items-center text-xs text-primary hover:underline">
+                                    Lihat detail
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            @else
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
+                    <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-2">Selamat Datang, {{ $user->name }}!</h2>
+                    <p class="text-gray-600 dark:text-gray-400">
+                        Anda login sebagai <span class="font-medium text-primary">{{ $user->email }}</span>.
+                    </p>
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                        Untuk menampilkan katalog sebagai penjual, silakan daftar terlebih dahulu sebagai penjual.
+                    </p>
+                </div>
+            @endif
         </main>
     </div>
 </div>

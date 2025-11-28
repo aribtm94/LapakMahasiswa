@@ -5,6 +5,7 @@ use App\Http\Controllers\SellerRegistrationController;
 use App\Http\Controllers\AdminSellerVerificationController;
 use App\Http\Controllers\SellerActivationController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SellerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,3 +53,15 @@ Route::get('/products/{product}', [ProductController::class, 'show'])
 // Simpan review tamu (tanpa middleware auth)
 Route::post('/products/{product}/reviews', [ProductController::class, 'storeGuestReview'])
     ->name('products.reviews.store');
+
+// Seller: kelola produk (harus login sebagai seller)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/seller/products/create', [ProductController::class, 'create'])
+        ->name('seller.products.create');
+    Route::post('/seller/products', [ProductController::class, 'store'])
+        ->name('seller.products.store');
+});
+
+// Halaman publik toko (non-login boleh akses)
+Route::get('/shops/{user}', [SellerController::class, 'show'])
+    ->name('shops.show');

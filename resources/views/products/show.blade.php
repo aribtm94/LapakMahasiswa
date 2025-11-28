@@ -72,17 +72,20 @@
                         $mainPhoto = $product->photos->first();
                     @endphp
                     <img
+                        id="main-product-image"
                         src="{{ $mainPhoto ? asset('storage/'.$mainPhoto->path) : 'https://via.placeholder.com/400x400?text=Produk' }}"
                         alt="{{ $product->name }}"
-                        class="w-full h-auto object-cover rounded-lg border border-slate-200"
+                        class="w-full aspect-square object-cover rounded-lg border border-slate-200"
                     />
                     <!-- Thumbnail -->
                     <div class="grid grid-cols-4 gap-2 mt-4">
                         @foreach($product->photos as $photo)
                             <img
                                 src="{{ asset('storage/'.$photo->path) }}"
+                                data-full-url="{{ asset('storage/'.$photo->path) }}"
                                 alt="Foto {{ $product->name }}"
-                                class="w-full h-20 object-cover rounded-md border border-slate-200"
+                                class="w-full h-20 object-cover rounded-md border border-slate-200 cursor-pointer hover:ring-2 hover:ring-primary"
+                                onclick="document.getElementById('main-product-image').src = this.dataset.fullUrl;"
                             />
                         @endforeach
                     </div>
@@ -130,9 +133,17 @@
                         </p>
                         <p>
                             <span class="font-medium text-slate-600 w-24 inline-block">Toko:</span>
-                            <span class="text-slate-800">
-                                {{ $product->shop_name ?? optional($product->seller)->shop_name ?? 'Lapak Mahasiswa' }}
-                            </span>
+                            @php
+                                $seller = $product->seller;
+                                $shopLabel = $product->shop_name ?? optional($seller)->shop_name ?? 'Lapak Mahasiswa';
+                            @endphp
+                            @if($seller)
+                                <a href="{{ route('shops.show', $seller) }}" class="text-primary font-medium hover:underline">
+                                    {{ $shopLabel }}
+                                </a>
+                            @else
+                                <span class="text-slate-800">{{ $shopLabel }}</span>
+                            @endif
                         </p>
                     </div>
                 </div>
