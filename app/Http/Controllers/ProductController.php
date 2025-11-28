@@ -49,6 +49,14 @@ class ProductController extends Controller
             'comment'    => $data['comment'],
         ]);
 
+        $averageRating = $product->guestReviews()->avg('rating') ?? 0;
+        $reviewsCount  = $product->guestReviews()->count();
+
+        $product->update([
+            'average_rating' => $averageRating,
+            'reviews_count'  => $reviewsCount,
+        ]);
+
         return redirect()
             ->route('products.show', $product)
             ->with('status', 'Terima kasih, ulasanmu sudah tersimpan.');

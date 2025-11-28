@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    $products = \App\Models\Product::latest()->take(12)->get();
+    return view('home', compact('products'));
 })->name('home');
 
 Route::get('/dashboard', function () {

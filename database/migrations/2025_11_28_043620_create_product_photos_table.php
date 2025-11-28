@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('product_id')
                   ->constrained('products')
                   ->cascadeOnDelete();
-            $table->string('path');              // path file di storage
+            $table->string('path');
             $table->boolean('is_cover')->default(false);
             $table->timestamps();
         });
@@ -29,7 +29,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('product_photos');
     }

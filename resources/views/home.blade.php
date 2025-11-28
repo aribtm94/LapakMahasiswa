@@ -86,38 +86,50 @@
             </div>
         </section>
 
-        <!-- Kategori Pilihan Section -->
+        <!-- Produk Terbaru Section -->
         <section class="mt-12 border border-[#d0e0e7] dark:border-gray-700 rounded-2xl p-8">
-            <h2 class="text-2xl font-bold font-display mb-6 text-[#0e171b] dark:text-white">
-                Kategori Pilihan
-            </h2>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 text-center">
-                @php
-                    $categories = [
-                        ['name' => 'Akademik', 'image' => '/images/categories/akademik.png'],
-                        ['name' => 'Elektronik', 'image' => '/images/categories/elektronik.png'],
-                        ['name' => 'Fashion', 'image' => '/images/categories/fashion.png'],
-                        ['name' => 'Makanan', 'image' => '/images/categories/makanan.png'],
-                        ['name' => 'Rumahan', 'image' => '/images/categories/rumahan.png'],
-                    ];
-                @endphp
-
-                @foreach($categories as $category)
-                <div class="flex flex-col items-center cursor-pointer group">
-                    <div class="w-full aspect-square border border-[#d0e0e7] dark:border-gray-700 rounded-2xl p-4 flex items-center justify-center bg-white group-hover:shadow-lg transition-shadow">
-                        <img 
-                            alt="{{ $category['name'] }}" 
-                            class="max-w-full max-h-full object-contain" 
-                            src="{{ $category['image'] }}"
-                            onerror="this.parentElement.innerHTML='<span class=\'material-symbols-outlined text-6xl text-gray-300\'>category</span>'"
-                        />
-                    </div>
-                    <span class="mt-3 text-lg font-display font-semibold text-[#0e171b] dark:text-white">
-                        {{ $category['name'] }}
-                    </span>
-                </div>
-                @endforeach
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold font-display text-[#0e171b] dark:text-white">
+                    Produk Terbaru
+                </h2>
+                <span class="text-sm text-[#4d8199]">{{ $products->count() }} produk</span>
             </div>
+
+            @if($products->isEmpty())
+                <p class="text-center text-[#4d8199]">Belum ada produk yang dipublikasikan.</p>
+            @else
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+                    @foreach($products as $product)
+                        <a href="{{ route('products.show', $product) }}" class="group border border-[#d0e0e7] dark:border-gray-700 rounded-2xl overflow-hidden bg-white hover:shadow-lg transition-shadow flex flex-col">
+                            <div class="relative w-full aspect-square bg-[#e8eef3] flex items-center justify-center">
+                                @php
+                                    $photo = optional($product->photos->first())->path;
+                                @endphp
+                                @if($photo)
+                                    <img src="{{ asset('storage/'.$photo) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
+                                @else
+                                    <span class="material-symbols-outlined text-6xl text-gray-300">image</span>
+                                @endif
+                            </div>
+                            <div class="p-4 flex flex-col flex-1">
+                                <h3 class="font-semibold text-sm md:text-base text-[#0e171b] line-clamp-2 min-h-[2.5rem]">
+                                    {{ $product->name }}
+                                </h3>
+                                <div class="mt-2 text-primary font-bold text-base md:text-lg">
+                                    Rp {{ number_format($product->price, 0, ',', '.') }}
+                                </div>
+                                <div class="mt-1 flex items-center text-xs text-[#4d8199]">
+                                    <span class="material-symbols-outlined text-sm mr-1 text-yellow-400">star</span>
+                                    <span>{{ number_format($product->average_rating, 1) }}</span>
+                                </div>
+                                <div class="mt-1 text-xs text-gray-500">
+                                    {{ $product->shop_name }}
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            @endif
         </section>
     </main>
 

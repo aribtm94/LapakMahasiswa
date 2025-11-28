@@ -33,15 +33,12 @@
     <!-- Header sederhana Lapak Mahasiswa -->
     <header class="mb-6">
         <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <span class="material-icons text-primary text-4xl">storefront</span>
+            <a href="{{ url('/') }}" class="flex items-center space-x-3 group">
+                <span class="material-icons text-primary text-4xl group-hover:scale-105 transition-transform">storefront</span>
                 <div>
-                    <h1 class="text-2xl font-bold text-primary">Lapak Mahasiswa</h1>
+                    <h1 class="text-2xl font-bold text-primary group-hover:underline">Lapak Mahasiswa</h1>
                     <p class="text-xs text-slate-500">Marketplace khusus civitas kampus</p>
                 </div>
-            </div>
-            <a href="{{ url('/') }}" class="text-sm text-primary hover:underline">
-                Kembali ke Beranda
             </a>
         </div>
     </header>
@@ -285,37 +282,20 @@
             </div>
         </div>
 
-        <!-- Kanan: box beli cepat (sederhana) -->
+        <!-- Kanan: informasi harga singkat -->
         <aside class="lg:col-span-1">
             <div class="sticky top-8 border border-slate-200 rounded-lg p-6 bg-white shadow-sm">
                 <h2 class="text-lg font-semibold text-slate-900 mb-4">
-                    Atur jumlah & catatan
+                    Informasi Harga
                 </h2>
-                <div class="flex items-center justify-between mb-4">
-                    <div class="flex items-center border border-slate-300 rounded-lg">
-                        <button class="px-3 py-1 text-slate-500">-</button>
-                        <input type="text" value="1"
-                               class="w-12 text-center border-l border-r border-slate-300 bg-transparent focus:ring-0 focus:outline-none" />
-                        <button class="px-3 py-1 text-primary">+</button>
-                    </div>
-                    <div class="text-xs">
-                        <span class="text-slate-500">Stok:</span>
-                        <span class="font-semibold text-slate-700">{{ $product->stock ?? '-' }}</span>
-                    </div>
-                </div>
-                <div class="flex justify-between items-center mb-6">
-                    <span class="text-slate-500 text-sm">Subtotal</span>
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-slate-500 text-sm">Harga</span>
                     <span class="text-xl font-bold text-slate-900">
                         Rp{{ number_format($product->price, 0, ',', '.') }}
                     </span>
                 </div>
-                <div class="space-y-3">
-                    <button class="w-full bg-primary text-white font-semibold py-3 rounded-lg hover:bg-blue-700 text-sm">
-                        Tambah ke Keranjang
-                    </button>
-                    <button class="w-full bg-white text-primary border border-primary font-semibold py-3 rounded-lg hover:bg-blue-50 text-sm">
-                        Beli Sekarang
-                    </button>
+                <div class="mt-2 text-xs text-slate-500">
+                    Stok: <span class="font-semibold text-slate-700">{{ $product->stock ?? '-' }}</span>
                 </div>
             </div>
         </aside>
