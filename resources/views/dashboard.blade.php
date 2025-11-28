@@ -96,13 +96,17 @@
                                 @endphp
                                 <div class="w-full aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden mb-3 flex items-center justify-center">
                                     @if($photo)
-                                        <img src="{{ asset('storage/'.$photo) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
+                                        <img src="{{ asset('storage/'.$photo) }}" alt="{{ $product->name }}" class="w-full h-full object-cover max-w-full max-h-full">
                                     @else
                                         <span class="material-symbols-outlined text-4xl text-gray-300">image</span>
                                     @endif
                                 </div>
                                 <h3 class="font-semibold text-gray-800 dark:text-white text-sm line-clamp-2 min-h-[2.5rem]">{{ $product->name }}</h3>
                                 <p class="mt-1 text-primary font-bold text-sm">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                                <div class="mt-1 flex items-center text-xs text-gray-500">
+                                    <span class="material-symbols-outlined text-yellow-400 text-xs mr-1">star</span>
+                                    {{ number_format($product->average_rating, 1) }} ({{ $product->reviews_count }} ulasan)
+                                </div>
                                 <p class="mt-1 text-xs text-gray-500">Etalase: {{ $product->showcase ?? '-' }}</p>
                                 <p class="mt-1 text-xs text-gray-500">Stok: {{ $product->stock ?? 0 }}</p>
                                 <a href="{{ route('products.show', $product) }}" class="mt-3 inline-flex items-center text-xs text-primary hover:underline">

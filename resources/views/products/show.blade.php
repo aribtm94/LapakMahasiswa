@@ -12,7 +12,7 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: "#2563EB", // biru Lapak Mahasiswa
+                        primary: "#24aceb", // biru Lapak Mahasiswa
                         "background-light": "#FFFFFF",
                         "background-dark": "#0F172A",
                     },
@@ -71,22 +71,26 @@
                     @php
                         $mainPhoto = $product->photos->first();
                     @endphp
-                    <img
-                        id="main-product-image"
-                        src="{{ $mainPhoto ? asset('storage/'.$mainPhoto->path) : 'https://via.placeholder.com/400x400?text=Produk' }}"
-                        alt="{{ $product->name }}"
-                        class="w-full aspect-square object-cover rounded-lg border border-slate-200"
-                    />
+                    <div class="relative w-full aspect-square bg-slate-100 rounded-lg border border-slate-200 overflow-hidden">
+                        <img
+                            id="main-product-image"
+                            src="{{ $mainPhoto ? asset('storage/'.$mainPhoto->path) : 'https://via.placeholder.com/400x400?text=Produk' }}"
+                            alt="{{ $product->name }}"
+                            class="w-full h-full object-contain max-w-full max-h-full"
+                        />
+                    </div>
                     <!-- Thumbnail -->
                     <div class="grid grid-cols-4 gap-2 mt-4">
                         @foreach($product->photos as $photo)
-                            <img
-                                src="{{ asset('storage/'.$photo->path) }}"
-                                data-full-url="{{ asset('storage/'.$photo->path) }}"
-                                alt="Foto {{ $product->name }}"
-                                class="w-full h-20 object-cover rounded-md border border-slate-200 cursor-pointer hover:ring-2 hover:ring-primary"
-                                onclick="document.getElementById('main-product-image').src = this.dataset.fullUrl;"
-                            />
+                            <div class="relative aspect-square bg-slate-100 rounded-md border border-slate-200 overflow-hidden cursor-pointer hover:ring-2 hover:ring-primary">
+                                <img
+                                    src="{{ asset('storage/'.$photo->path) }}"
+                                    data-full-url="{{ asset('storage/'.$photo->path) }}"
+                                    alt="Foto {{ $product->name }}"
+                                    class="w-full h-full object-cover"
+                                    onclick="document.getElementById('main-product-image').src = this.dataset.fullUrl;"
+                                />
+                            </div>
                         @endforeach
                     </div>
                 </div>

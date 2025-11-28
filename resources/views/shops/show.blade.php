@@ -37,9 +37,9 @@
                             @php
                                 $photo = optional($product->photos->first())->path;
                             @endphp
-                            <div class="relative w-full aspect-square bg-[#e8eef3] flex items-center justify-center">
+                            <div class="relative w-full aspect-square bg-[#e8eef3] flex items-center justify-center overflow-hidden">
                                 @if($photo)
-                                    <img src="{{ asset('storage/'.$photo) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
+                                    <img src="{{ asset('storage/'.$photo) }}" alt="{{ $product->name }}" class="w-full h-full object-cover max-w-full max-h-full">
                                 @else
                                     <span class="material-symbols-outlined text-5xl text-gray-300">image</span>
                                 @endif
@@ -50,6 +50,10 @@
                                 </h3>
                                 <div class="mt-1 text-primary font-bold text-sm">
                                     Rp {{ number_format($product->price, 0, ',', '.') }}
+                                </div>
+                                <div class="mt-1 flex items-center text-[11px] text-[#4d8199]">
+                                    <span class="material-symbols-outlined text-yellow-400 text-xs mr-1">star</span>
+                                    {{ number_format($product->average_rating, 1) }}
                                 </div>
                                 <div class="mt-1 text-[11px] text-[#4d8199]">
                                     Etalase: {{ $product->showcase ?? '-' }}

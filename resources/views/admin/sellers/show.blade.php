@@ -126,8 +126,11 @@
                             <p class="text-sm text-[#4d8199] mb-2">Foto KTP</p>
                             @if($user->pic_id_photo_path)
                                 <a href="{{ asset('storage/'.$user->pic_id_photo_path) }}" target="_blank" class="block">
-                                    <img src="{{ asset('storage/'.$user->pic_id_photo_path) }}" alt="Foto KTP" class="w-full rounded-lg border border-[#d0e0e7] dark:border-gray-700 hover:opacity-90 transition-opacity"/>
+                                    <div class="relative w-full aspect-[4/3] bg-gray-100 dark:bg-gray-800 rounded-lg border border-[#d0e0e7] dark:border-gray-700 overflow-hidden hover:opacity-90 transition-opacity">
+                                        <img src="{{ asset('storage/'.$user->pic_id_photo_path) }}" alt="Foto KTP" class="w-full h-full object-contain"/>
+                                    </div>
                                 </a>
+                                <p class="text-xs text-[#4d8199] mt-1">Klik untuk melihat ukuran penuh</p>
                             @else
                                 <div class="w-full h-32 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
                                     <span class="text-[#4d8199]">Tidak ada foto</span>
@@ -138,8 +141,11 @@
                             <p class="text-sm text-[#4d8199] mb-2">Foto Diri</p>
                             @if($user->pic_photo_path)
                                 <a href="{{ asset('storage/'.$user->pic_photo_path) }}" target="_blank" class="block">
-                                    <img src="{{ asset('storage/'.$user->pic_photo_path) }}" alt="Foto Diri" class="w-full rounded-lg border border-[#d0e0e7] dark:border-gray-700 hover:opacity-90 transition-opacity"/>
+                                    <div class="relative w-full aspect-[3/4] bg-gray-100 dark:bg-gray-800 rounded-lg border border-[#d0e0e7] dark:border-gray-700 overflow-hidden hover:opacity-90 transition-opacity">
+                                        <img src="{{ asset('storage/'.$user->pic_photo_path) }}" alt="Foto Diri" class="w-full h-full object-contain"/>
+                                    </div>
                                 </a>
+                                <p class="text-xs text-[#4d8199] mt-1">Klik untuk melihat ukuran penuh</p>
                             @else
                                 <div class="w-full h-32 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
                                     <span class="text-[#4d8199]">Tidak ada foto</span>

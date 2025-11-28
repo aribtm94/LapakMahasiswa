@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductGuestReview;
 use App\Models\ProductPhoto;
+use App\Mail\NewReviewNotificationMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ProductController extends Controller
 {
@@ -94,7 +96,7 @@ class ProductController extends Controller
             'comment' => 'required|string|max:1000',
         ]);
 
-        ProductGuestReview::create([
+        $review = ProductGuestReview::create([
             'product_id' => $product->id,
             'name'       => $data['name'],
             'email'      => $data['email'],
@@ -109,6 +111,17 @@ class ProductController extends Controller
             'average_rating' => $averageRating,
             'reviews_count'  => $reviewsCount,
         ]);
+
+        // Kirim email notifikasi ke penjual jika ada seller
+        $product->refresh();
+        if ($product->seller && $product->seller->email) {
+            try {
+                Mail::to($product->seller->email)->send(new NewReviewNotificationMail($review, $product));
+            } catch (\Exception $e) {
+                // Log error tapi tidak gagalkan proses
+                \Log::error('Failed to send review notification email: ' . $e->getMessage());
+            }
+        }
 
         return redirect()
             ->route('products.show', $product)

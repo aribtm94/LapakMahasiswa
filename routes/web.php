@@ -16,16 +16,32 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     $category = request('category');
-    $query = \App\Models\Product::latest();
+    $search = request('search');
+    $query = \App\Models\Product::with('seller')->latest();
     
+    // Filter by category
     if ($category && in_array($category, ['elektronik', 'fashion', 'makanan', 'akademik', 'rumahan'])) {
         $query->where('category', $category);
     }
     
+    // Search by nama produk, nama toko, lokasi (kabupaten/kota, provinsi)
+    if ($search) {
+        $query->where(function($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%")
+              ->orWhere('shop_name', 'like', "%{$search}%")
+              ->orWhereHas('seller', function($sellerQuery) use ($search) {
+                  $sellerQuery->where('kota', 'like', "%{$search}%")
+                              ->orWhere('provinsi', 'like', "%{$search}%")
+                              ->orWhere('shop_name', 'like', "%{$search}%");
+              });
+        });
+    }
+    
     $products = $query->take(12)->get();
     $selectedCategory = $category;
+    $searchQuery = $search;
     
-    return view('home', compact('products', 'selectedCategory'));
+    return view('home', compact('products', 'selectedCategory', 'searchQuery'));
 })->name('home');
 
 Route::get('/dashboard', function () {

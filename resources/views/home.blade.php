@@ -12,12 +12,19 @@
         
         <!-- Search Bar -->
         <div class="relative flex-grow max-w-xl mx-4">
-            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#4d8199]">search</span>
-            <input 
-                class="w-full pl-10 pr-4 py-2 bg-[#e8eef3] dark:bg-[#1a2632] border border-[#d0e0e7] dark:border-gray-700 rounded-lg text-[#0e171b] dark:text-white placeholder-[#4d8199] focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" 
-                placeholder="Cari di LapakMahasiswa" 
-                type="text"
-            />
+            <form action="{{ route('home') }}" method="GET">
+                @if(isset($selectedCategory) && $selectedCategory)
+                    <input type="hidden" name="category" value="{{ $selectedCategory }}">
+                @endif
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#4d8199]">search</span>
+                <input 
+                    name="search"
+                    value="{{ $searchQuery ?? '' }}"
+                    class="w-full pl-10 pr-4 py-2 bg-[#e8eef3] dark:bg-[#1a2632] border border-[#d0e0e7] dark:border-gray-700 rounded-lg text-[#0e171b] dark:text-white placeholder-[#4d8199] focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary" 
+                    placeholder="Cari produk, toko, atau lokasi..." 
+                    type="text"
+                />
+            </form>
         </div>
         
         <!-- Action Buttons -->
@@ -72,14 +79,14 @@
                 <p class="text-2xl md:text-3xl font-bold font-display mt-2">
                     Yuk pakai LapakMahasiswa aja!!!!
                 </p>
-                <button class="mt-8 px-8 py-3 bg-white text-primary font-semibold rounded-full shadow-md hover:bg-gray-100 transition-colors">
+                <a href="#produk" class="mt-8 inline-block px-8 py-3 bg-white text-primary font-semibold rounded-full shadow-md hover:bg-gray-100 transition-colors">
                     Cek Sekarang
-                </button>
+                </a>
             </div>
             <div>
                 <img 
                     alt="Ilustrasi belanja" 
-                    class="w-64 h-auto md:w-96" 
+                    class="w-64 h-auto md:w-96 max-w-full" 
                     src="/images/hero-illustration.png"
                     onerror="this.style.display='none'"
                 />
@@ -143,30 +150,49 @@
         </section>
 
         <!-- Produk Terbaru Section -->
-        <section class="mt-12 border border-[#d0e0e7] dark:border-gray-700 rounded-2xl p-8">
+        <section id="produk" class="mt-12 border border-[#d0e0e7] dark:border-gray-700 rounded-2xl p-8">
             <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-bold font-display text-[#0e171b] dark:text-white">
-                    @if(isset($selectedCategory) && $selectedCategory)
-                        Produk {{ ucfirst($selectedCategory) }}
-                    @else
-                        Produk Terbaru
+                <div>
+                    <h2 class="text-2xl font-bold font-display text-[#0e171b] dark:text-white">
+                        @if(isset($searchQuery) && $searchQuery)
+                            Hasil Pencarian "{{ $searchQuery }}"
+                        @elseif(isset($selectedCategory) && $selectedCategory)
+                            Produk {{ ucfirst($selectedCategory) }}
+                        @else
+                            Produk Terbaru
+                        @endif
+                    </h2>
+                    @if(isset($searchQuery) && $searchQuery)
+                        <a href="{{ route('home', isset($selectedCategory) ? ['category' => $selectedCategory] : []) }}" class="text-sm text-primary hover:underline flex items-center gap-1 mt-1">
+                            <span class="material-symbols-outlined text-lg">close</span>
+                            Hapus pencarian
+                        </a>
                     @endif
-                </h2>
+                </div>
                 <span class="text-sm text-[#4d8199]">{{ $products->count() }} produk</span>
             </div>
 
             @if($products->isEmpty())
-                <p class="text-center text-[#4d8199]">Belum ada produk yang dipublikasikan.</p>
+                <div class="text-center py-12">
+                    <span class="material-symbols-outlined text-6xl text-gray-300 mb-4">search_off</span>
+                    <p class="text-[#4d8199]">
+                        @if(isset($searchQuery) && $searchQuery)
+                            Tidak ada produk yang cocok dengan pencarian "{{ $searchQuery }}".
+                        @else
+                            Belum ada produk yang dipublikasikan.
+                        @endif
+                    </p>
+                </div>
             @else
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
                     @foreach($products as $product)
                         <a href="{{ route('products.show', $product) }}" class="group border border-[#d0e0e7] dark:border-gray-700 rounded-2xl overflow-hidden bg-white hover:shadow-lg transition-shadow flex flex-col">
-                            <div class="relative w-full aspect-square bg-[#e8eef3] flex items-center justify-center">
+                            <div class="relative w-full aspect-square bg-[#e8eef3] flex items-center justify-center overflow-hidden">
                                 @php
                                     $photo = optional($product->photos->first())->path;
                                 @endphp
                                 @if($photo)
-                                    <img src="{{ asset('storage/'.$photo) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
+                                    <img src="{{ asset('storage/'.$photo) }}" alt="{{ $product->name }}" class="w-full h-full object-cover max-w-full max-h-full">
                                 @else
                                     <span class="material-symbols-outlined text-6xl text-gray-300">image</span>
                                 @endif
@@ -184,6 +210,10 @@
                                 </div>
                                 <div class="mt-1 text-xs text-gray-500">
                                     {{ $product->shop_name }}
+                                    @if($product->seller && ($product->seller->kota || $product->seller->provinsi))
+                                        <span class="text-gray-400">•</span>
+                                        {{ $product->seller->kota ?? '' }}{{ $product->seller->kota && $product->seller->provinsi ? ', ' : '' }}{{ $product->seller->provinsi ?? '' }}
+                                    @endif
                                 </div>
                             </div>
                         </a>
