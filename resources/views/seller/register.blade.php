@@ -165,18 +165,6 @@
                     <div>
                         <h3 class="text-[#0e171b] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-2 pt-4">Alamat Lengkap</h3>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <label class="flex flex-col sm:col-span-2">
-                                <p class="text-[#0e171b] dark:text-gray-300 text-base font-medium leading-normal pb-2">Alamat<span class="text-red-500">*</span></p>
-                                <input name="pic_address" value="{{ old('pic_address') }}" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0e171b] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#d0e0e7] dark:border-gray-700 bg-background-light dark:bg-background-dark focus:border-primary h-12 placeholder:text-[#4d8199] px-4 text-base font-normal leading-normal" placeholder="Nama Jalan, No. Rumah" required="" type="text"/>
-                            </label>
-                            <label class="flex flex-col">
-                                <p class="text-[#0e171b] dark:text-gray-300 text-base font-medium leading-normal pb-2">RT</p>
-                                <input name="rt" value="{{ old('rt') }}" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0e171b] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#d0e0e7] dark:border-gray-700 bg-background-light dark:bg-background-dark focus:border-primary h-12 placeholder:text-[#4d8199] px-4 text-base font-normal leading-normal" placeholder="001" type="text"/>
-                            </label>
-                            <label class="flex flex-col">
-                                <p class="text-[#0e171b] dark:text-gray-300 text-base font-medium leading-normal pb-2">RW</p>
-                                <input name="rw" value="{{ old('rw') }}" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0e171b] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#d0e0e7] dark:border-gray-700 bg-background-light dark:bg-background-dark focus:border-primary h-12 placeholder:text-[#4d8199] px-4 text-base font-normal leading-normal" placeholder="001" type="text"/>
-                            </label>
                             <!-- Provinsi Dropdown -->
                             <label class="flex flex-col sm:col-span-2">
                                 <p class="text-[#0e171b] dark:text-gray-300 text-base font-medium leading-normal pb-2">Provinsi<span class="text-red-500">*</span></p>
@@ -225,6 +213,18 @@
                                         <span class="material-symbols-outlined text-xl" id="kelurahan-icon">expand_more</span>
                                     </div>
                                 </div>
+                            </label>
+                            <label class="flex flex-col sm:col-span-2">
+                                <p class="text-[#0e171b] dark:text-gray-300 text-base font-medium leading-normal pb-2">Alamat<span class="text-red-500">*</span></p>
+                                <input name="pic_address" value="{{ old('pic_address') }}" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0e171b] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#d0e0e7] dark:border-gray-700 bg-background-light dark:bg-background-dark focus:border-primary h-12 placeholder:text-[#4d8199] px-4 text-base font-normal leading-normal" placeholder="Nama Jalan, No. Rumah" required="" type="text"/>
+                            </label>
+                            <label class="flex flex-col">
+                                <p class="text-[#0e171b] dark:text-gray-300 text-base font-medium leading-normal pb-2">RT</p>
+                                <input name="rt" value="{{ old('rt') }}" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0e171b] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#d0e0e7] dark:border-gray-700 bg-background-light dark:bg-background-dark focus:border-primary h-12 placeholder:text-[#4d8199] px-4 text-base font-normal leading-normal" placeholder="001" type="text"/>
+                            </label>
+                            <label class="flex flex-col">
+                                <p class="text-[#0e171b] dark:text-gray-300 text-base font-medium leading-normal pb-2">RW</p>
+                                <input name="rw" value="{{ old('rw') }}" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0e171b] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#d0e0e7] dark:border-gray-700 bg-background-light dark:bg-background-dark focus:border-primary h-12 placeholder:text-[#4d8199] px-4 text-base font-normal leading-normal" placeholder="001" type="text"/>
                             </label>
                         </div>
                     </div>
