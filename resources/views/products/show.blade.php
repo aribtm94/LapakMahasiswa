@@ -1,40 +1,53 @@
 <!DOCTYPE html>
-<html lang="id">
+<html class="light" lang="id">
 <head>
     <meta charset="utf-8" />
-    <title>Detail Produk - Lapak Mahasiswa</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ $product->name }} - LapakMahasiswa</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
     <script>
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
                     colors: {
-                        primary: "#24aceb", // biru Lapak Mahasiswa
-                        "background-light": "#FFFFFF",
-                        "background-dark": "#0F172A",
+                        "primary": "#24aceb",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#111c21",
                     },
                     fontFamily: {
-                        display: ["Inter", "sans-serif"],
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
                     },
                     borderRadius: {
-                        DEFAULT: "0.5rem",
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
                     },
                 },
             },
-        };
+        }
     </script>
-    <style>.material-icons{font-size:inherit}</style>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
 </head>
-<body class="bg-slate-50 font-display text-slate-800">
+<body class="font-display antialiased bg-background-light text-[#0e171b]">
 <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Header sederhana Lapak Mahasiswa -->
     <header class="mb-6">
         <div class="flex items-center justify-between">
             <a href="{{ url('/') }}" class="flex items-center space-x-3 group">
-                <span class="material-icons text-primary text-4xl group-hover:scale-105 transition-transform">storefront</span>
+                <span class="material-symbols-outlined text-primary text-4xl group-hover:scale-105 transition-transform">store</span>
                 <div>
                     <h1 class="text-2xl font-bold text-primary group-hover:underline">Lapak Mahasiswa</h1>
                     <p class="text-xs text-slate-500">Marketplace khusus civitas kampus</p>
@@ -48,12 +61,12 @@
         <ol class="inline-flex items-center space-x-1">
             <li class="flex items-center">
                 <a href="{{ url('/') }}" class="hover:text-primary">Beranda</a>
-                <span class="material-icons mx-1 text-base text-slate-400">chevron_right</span>
+                <span class="material-symbols-outlined mx-1 text-base text-slate-400">chevron_right</span>
             </li>
             @if($product->showcase)
                 <li class="flex items-center">
                     <span class="hover:text-primary">{{ $product->showcase }}</span>
-                    <span class="material-icons mx-1 text-base text-slate-400">chevron_right</span>
+                    <span class="material-symbols-outlined mx-1 text-base text-slate-400">chevron_right</span>
                 </li>
             @endif
             <li class="flex items-center text-slate-700 font-medium">
@@ -106,7 +119,7 @@
                             <span class="text-slate-300">|</span>
                         @endif
                         <div class="flex items-center">
-                            <span class="material-icons text-yellow-400 text-base">star</span>
+                            <span class="material-symbols-outlined text-yellow-400 text-base">star</span>
                             <span class="ml-1 font-medium text-slate-800">
                                 {{ number_format($averageRating, 1) }}
                             </span>
@@ -179,7 +192,7 @@
                     <div class="flex flex-col md:flex-row md:items-start md:space-x-6 mb-6">
                         <div class="text-center mb-4 md:mb-0">
                             <div class="flex items-center justify-center text-4xl font-bold text-slate-900">
-                                <span class="material-icons text-yellow-400 text-3xl mr-1">star</span>
+                                <span class="material-symbols-outlined text-yellow-400 text-3xl mr-1">star</span>
                                 {{ number_format($averageRating, 1) }}
                                 <span class="text-base font-normal text-slate-500 ml-2">/5.0</span>
                             </div>
@@ -195,7 +208,7 @@
                                 @endphp
                                 <div class="flex items-center text-xs mb-1">
                                     <div class="flex items-center text-yellow-400 w-10">
-                                        <span class="material-icons text-sm">star</span>
+                                        <span class="material-symbols-outlined text-sm">star</span>
                                         <span class="ml-1">{{ $i }}</span>
                                     </div>
                                     <div class="w-full bg-slate-200 rounded-full h-1.5 mx-2">
@@ -274,7 +287,7 @@
                                         <div class="flex items-center text-xs text-slate-500 mt-1">
                                             <div class="flex text-yellow-400">
                                                 @for($i = 1; $i <= 5; $i++)
-                                                    <span class="material-icons text-sm">
+                                                    <span class="material-symbols-outlined text-sm">
                                                         {{ $i <= $review->rating ? 'star' : 'star_border' }}
                                                     </span>
                                                 @endfor

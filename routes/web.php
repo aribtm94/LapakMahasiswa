@@ -22,8 +22,19 @@ Route::get('/', function () {
     $query = \App\Models\Product::with('seller')->latest();
     
     // Filter by category
-    if ($category && in_array($category, ['elektronik', 'fashion', 'makanan', 'akademik', 'rumahan'])) {
-        $query->where('category', $category);
+    if ($category) {
+        $validCategories = \App\Http\Controllers\ProductController::getValidCategories();
+        $categoryGroups = \App\Http\Controllers\ProductController::getCategoryGroups();
+        
+        // Check if it's a main category (fashion, kecantikan, rumah, elektronik, hobi, lainnya)
+        if (array_key_exists($category, $categoryGroups)) {
+            // Filter by all subcategories in this group
+            $subcategories = $categoryGroups[$category];
+            $query->whereIn('category', $subcategories);
+        } elseif (in_array($category, $validCategories)) {
+            // Filter by specific subcategory
+            $query->where('category', $category);
+        }
     }
     
     // Search by nama produk, nama toko, lokasi (kabupaten/kota, provinsi)

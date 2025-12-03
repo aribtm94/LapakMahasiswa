@@ -16,11 +16,80 @@ class ProductController extends Controller
         return view('seller.products.create');
     }
 
+    // Daftar semua kategori yang valid
+    private static $validCategories = [
+        // Fashion & Aksesoris
+        'fashion-wanita', 'fashion-pria', 'fashion-muslim', 'busana-anak-bayi',
+        'sepatu-pria', 'sepatu-wanita', 'sandal-slipper', 'tas-wanita', 'tas-pria',
+        'jam-tangan', 'aksesoris-fashion', 'emas-perhiasan', 'fashion-lokal-umkm',
+        // Kecantikan & Kesehatan
+        'kecantikan-perawatan', 'perawatan-kulit', 'kesehatan', 'kesehatan-herbal', 'ibu-bayi',
+        // Rumah & Kehidupan
+        'perlengkapan-rumah', 'dapur-masak', 'furnitur', 'dekorasi-rumah',
+        'elektronik-rumah', 'peralatan-taman', 'pertukangan',
+        // Elektronik & Gadget
+        'handphone-aksesoris', 'laptop-aksesoris', 'komputer-komponen',
+        'kamera-aksesoris', 'gaming-console', 'fotografi-videografi',
+        // Hobi & Gaya Hidup
+        'otomotif-mobil', 'otomotif-motor', 'hobi-koleksi', 'olahraga-outdoor',
+        'camping-hiking', 'alat-musik', 'buku-alat-tulis',
+        // Lainnya
+        'software-voucher', 'tiket-travel', 'makanan-minuman', 'bahan-kue-sembako',
+        'hewan-peliharaan', 'perlengkapan-sekolah', 'mainan-edukasi',
+        'handmade-kerajinan', 'properti-kos', 'jasa-desain', 'jasa-servis',
+    ];
+
+    // Mapping kategori utama ke sub-kategori
+    private static $categoryGroups = [
+        'fashion' => [
+            'fashion-wanita', 'fashion-pria', 'fashion-muslim', 'busana-anak-bayi',
+            'sepatu-pria', 'sepatu-wanita', 'sandal-slipper', 'tas-wanita', 'tas-pria',
+            'jam-tangan', 'aksesoris-fashion', 'emas-perhiasan', 'fashion-lokal-umkm',
+        ],
+        'kecantikan' => [
+            'kecantikan-perawatan', 'perawatan-kulit', 'kesehatan', 'kesehatan-herbal', 'ibu-bayi',
+        ],
+        'rumah' => [
+            'perlengkapan-rumah', 'dapur-masak', 'furnitur', 'dekorasi-rumah',
+            'elektronik-rumah', 'peralatan-taman', 'pertukangan',
+        ],
+        'elektronik' => [
+            'handphone-aksesoris', 'laptop-aksesoris', 'komputer-komponen',
+            'kamera-aksesoris', 'gaming-console', 'fotografi-videografi',
+        ],
+        'hobi' => [
+            'otomotif-mobil', 'otomotif-motor', 'hobi-koleksi', 'olahraga-outdoor',
+            'camping-hiking', 'alat-musik', 'buku-alat-tulis',
+        ],
+        'lainnya' => [
+            'software-voucher', 'tiket-travel', 'makanan-minuman', 'bahan-kue-sembako',
+            'hewan-peliharaan', 'perlengkapan-sekolah', 'mainan-edukasi',
+            'handmade-kerajinan', 'properti-kos', 'jasa-desain', 'jasa-servis',
+        ],
+    ];
+
+    public static function getValidCategories()
+    {
+        return self::$validCategories;
+    }
+
+    public static function getCategoryGroups()
+    {
+        return self::$categoryGroups;
+    }
+
+    public static function getSubcategoriesByMainCategory($mainCategory)
+    {
+        return self::$categoryGroups[$mainCategory] ?? [];
+    }
+
     public function store(Request $request)
     {
+        $validCategoriesString = implode(',', self::$validCategories);
+        
         $data = $request->validate([
             'name'        => 'required|string|max:255',
-            'category'    => 'required|string|in:elektronik,fashion,makanan,akademik,rumahan',
+            'category'    => 'required|string|in:' . $validCategoriesString,
             'description' => 'nullable|string',
             'shop_name'   => 'nullable|string|max:255',
             'condition'   => 'nullable|string|max:50',
