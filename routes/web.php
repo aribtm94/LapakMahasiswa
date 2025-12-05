@@ -8,6 +8,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\SellerSettingsController;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,9 +60,9 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/dashboard', function () {
-    // Redirect admin to admin sellers dashboard
+    // Redirect admin to admin dashboard
     if (auth()->user()->is_admin) {
-        return redirect()->route('admin.sellers.index');
+        return redirect()->route('admin.dashboard');
     }
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -82,6 +84,17 @@ Route::get('/seller/activate/{token}', [SellerActivationController::class, 'acti
 
 // Admin seller verification
 Route::middleware(['auth'])->group(function () {
+    // Admin Dashboard
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/chart-data', [AdminDashboardController::class, 'getChartData'])->name('admin.chart-data');
+    
+    // Admin Reports
+    Route::get('/admin/reports', [AdminReportController::class, 'index'])->name('admin.reports.index');
+    Route::get('/admin/reports/seller-status', [AdminReportController::class, 'sellerStatus'])->name('admin.reports.seller-status');
+    Route::get('/admin/reports/sellers-by-province', [AdminReportController::class, 'sellersByProvince'])->name('admin.reports.sellers-by-province');
+    Route::get('/admin/reports/product-ratings', [AdminReportController::class, 'productRatings'])->name('admin.reports.product-ratings');
+    
+    // Seller Verification
     Route::get('/admin/sellers', [AdminSellerVerificationController::class, 'index'])->name('admin.sellers.index');
     Route::get('/admin/sellers/{user}', [AdminSellerVerificationController::class, 'show'])->name('admin.sellers.show');
     Route::post('/admin/sellers/{user}/approve', [AdminSellerVerificationController::class, 'approve'])->name('admin.sellers.approve');

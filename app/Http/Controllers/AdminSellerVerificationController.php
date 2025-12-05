@@ -14,9 +14,10 @@ class AdminSellerVerificationController extends Controller
 {
     public function index()
     {
-        $pending = User::where('seller_status', 'pending')->get();
-        $approved = User::where('seller_status', 'approved')->get();
-        $rejected = User::where('seller_status', 'rejected')->get();
+        // Exclude admin users from seller lists
+        $pending = User::where('seller_status', 'pending')->where(function($q) { $q->where('is_admin', false)->orWhereNull('is_admin'); })->get();
+        $approved = User::where('seller_status', 'approved')->where(function($q) { $q->where('is_admin', false)->orWhereNull('is_admin'); })->get();
+        $rejected = User::where('seller_status', 'rejected')->where(function($q) { $q->where('is_admin', false)->orWhereNull('is_admin'); })->get();
         
         // Get pending profile updates
         $pendingProfileUpdates = SellerProfileUpdate::with('user')
