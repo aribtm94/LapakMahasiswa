@@ -250,17 +250,26 @@
                                 </div>
                             </div>
 
-                            <div>
-                                <label class="block text-xs font-medium text-slate-700">Rating</label>
-                                <select name="rating"
-                                        class="mt-1 block w-32 border border-slate-300 rounded-md px-2 py-2 text-sm">
-                                    @for($i = 5; $i >= 1; $i--)
-                                        <option value="{{ $i }}" {{ old('rating') == $i ? 'selected' : '' }}>
-                                            {{ $i }} Bintang
-                                        </option>
-                                    @endfor
-                                </select>
-                                @error('rating')<p class="text-xs text-red-600 mt-1">{{ $message }}</p>@enderror
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-700">Provinsi <span class="text-slate-400">(opsional)</span></label>
+                                    <select name="provinsi" id="provinsi-review"
+                                            class="mt-1 block w-full border border-slate-300 rounded-md px-2 py-2 text-sm">
+                                        <option value="">-- Pilih Provinsi --</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-700">Rating</label>
+                                    <select name="rating"
+                                            class="mt-1 block w-full border border-slate-300 rounded-md px-2 py-2 text-sm">
+                                        @for($i = 5; $i >= 1; $i--)
+                                            <option value="{{ $i }}" {{ old('rating') == $i ? 'selected' : '' }}>
+                                                {{ $i }} Bintang
+                                            </option>
+                                        @endfor
+                                    </select>
+                                    @error('rating')<p class="text-xs text-red-600 mt-1">{{ $message }}</p>@enderror
+                                </div>
                             </div>
 
                             <div>
@@ -329,5 +338,25 @@
         </aside>
     </main>
 </div>
+
+<script>
+// Load provinsi untuk form review
+document.addEventListener('DOMContentLoaded', function() {
+    const provinsiSelect = document.getElementById('provinsi-review');
+    if (provinsiSelect) {
+        fetch('/api/region/provinces')
+            .then(response => response.json())
+            .then(provinces => {
+                provinces.forEach(prov => {
+                    const option = document.createElement('option');
+                    option.value = prov.name;
+                    option.textContent = prov.name;
+                    provinsiSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error loading provinces:', error));
+    }
+});
+</script>
 </body>
 </html>

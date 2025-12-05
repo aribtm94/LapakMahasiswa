@@ -13,6 +13,7 @@ class ProductGuestReview extends Model
         'product_id',
         'name',
         'email',
+        'provinsi',
         'rating',
         'comment',
     ];

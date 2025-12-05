@@ -10,6 +10,8 @@ use App\Http\Controllers\RegionController;
 use App\Http\Controllers\SellerSettingsController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminReportController;
+use App\Http\Controllers\SellerDashboardController;
+use App\Http\Controllers\SellerReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -64,6 +66,10 @@ Route::get('/dashboard', function () {
     if (auth()->user()->is_admin) {
         return redirect()->route('admin.dashboard');
     }
+    // Redirect approved seller to seller dashboard
+    if (auth()->user()->seller_status === 'approved') {
+        return redirect()->route('seller.dashboard');
+    }
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -115,6 +121,22 @@ Route::post('/products/{product}/reviews', [ProductController::class, 'storeGues
 
 // Seller: kelola produk (harus login sebagai seller)
 Route::middleware(['auth'])->group(function () {
+    // Seller Dashboard
+    Route::get('/seller/dashboard', [SellerDashboardController::class, 'index'])
+        ->name('seller.dashboard');
+    Route::get('/seller/chart-data', [SellerDashboardController::class, 'getChartData'])
+        ->name('seller.chart-data');
+    
+    // Seller Reports
+    Route::get('/seller/reports', [SellerReportController::class, 'index'])
+        ->name('seller.reports.index');
+    Route::get('/seller/reports/stock-by-quantity', [SellerReportController::class, 'stockByQuantity'])
+        ->name('seller.reports.stock-by-quantity');
+    Route::get('/seller/reports/stock-by-rating', [SellerReportController::class, 'stockByRating'])
+        ->name('seller.reports.stock-by-rating');
+    Route::get('/seller/reports/low-stock', [SellerReportController::class, 'lowStock'])
+        ->name('seller.reports.low-stock');
+    
     Route::get('/seller/products/create', [ProductController::class, 'create'])
         ->name('seller.products.create');
     Route::post('/seller/products', [ProductController::class, 'store'])

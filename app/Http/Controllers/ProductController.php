@@ -159,16 +159,18 @@ class ProductController extends Controller
     public function storeGuestReview(Request $request, Product $product)
     {
         $data = $request->validate([
-            'name'    => 'required|string|max:120',
-            'email'   => 'required|email|max:150',
-            'rating'  => 'required|integer|min:1|max:5',
-            'comment' => 'required|string|max:1000',
+            'name'     => 'required|string|max:120',
+            'email'    => 'required|email|max:150',
+            'provinsi' => 'nullable|string|max:100',
+            'rating'   => 'required|integer|min:1|max:5',
+            'comment'  => 'required|string|max:1000',
         ]);
 
         $review = ProductGuestReview::create([
             'product_id' => $product->id,
             'name'       => $data['name'],
             'email'      => $data['email'],
+            'provinsi'   => $data['provinsi'] ?? null,
             'rating'     => $data['rating'],
             'comment'    => $data['comment'],
         ]);
