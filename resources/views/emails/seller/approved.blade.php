@@ -64,7 +64,7 @@
         <div class="step-number">3</div>
         <div class="step-content">
             <h4>Mulai Berjualan! 💰</h4>
-            <p>Produk Anda akan tampil dan bisa dilihat oleh pembeli.</p>
+            <p>Produk Anda akan tampil dan bisa dilihat oleh pengunjung.</p>
         </div>
     </div>
 </div>

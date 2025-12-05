@@ -114,10 +114,6 @@
                     </h1>
 
                     <div class="flex items-center space-x-2 mt-2 text-sm text-slate-500">
-                        @if($product->sold_count)
-                            <span>Terjual {{ $product->sold_count }}</span>
-                            <span class="text-slate-300">|</span>
-                        @endif
                         <div class="flex items-center">
                             <span class="material-symbols-outlined text-yellow-400 text-base">star</span>
                             <span class="ml-1 font-medium text-slate-800">
@@ -186,7 +182,7 @@
                 </div>
 
                 <div id="review" class="py-6">
-                    <h3 class="text-lg font-semibold text-slate-900 mb-4">Ulasan Pembeli</h3>
+                    <h3 class="text-lg font-semibold text-slate-900 mb-4">Ulasan Pengunjung</h3>
 
                     <!-- Ringkasan rating -->
                     <div class="flex flex-col md:flex-row md:items-start md:space-x-6 mb-6">
