@@ -232,9 +232,56 @@
             </div>
         </div>
         
-        <!-- Search Bar -->
-        <div class="relative flex-grow max-w-xl mx-4">
-            <form action="{{ route('home') }}" method="GET">
+        <!-- Search Bar - Responsive -->
+        <div class="relative flex-grow max-w-xl mx-4" x-data="{ searchOpen: false }">
+            <!-- Mobile: Icon Only -->
+            <button 
+                @click="searchOpen = true" 
+                class="sm:hidden flex items-center justify-center w-10 h-10 bg-[#e8eef3] dark:bg-[#1a2632] border border-[#d0e0e7] dark:border-gray-700 rounded-lg hover:bg-[#dce4eb] dark:hover:bg-[#243442] transition-colors"
+            >
+                <span class="material-symbols-outlined text-[#4d8199]">search</span>
+            </button>
+            
+            <!-- Mobile: Expanded Search (Fullscreen Overlay) -->
+            <div 
+                x-show="searchOpen" 
+                x-cloak
+                x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
+                class="sm:hidden fixed inset-0 bg-white dark:bg-[#111c21] z-50 p-4"
+            >
+                <form action="{{ route('home') }}" method="GET" class="flex items-center gap-2">
+                    @if(isset($selectedCategory) && $selectedCategory)
+                        <input type="hidden" name="category" value="{{ $selectedCategory }}">
+                    @endif
+                    <button type="button" @click="searchOpen = false" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full">
+                        <span class="material-symbols-outlined text-[#0e171b] dark:text-white">arrow_back</span>
+                    </button>
+                    <div class="relative flex-grow">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#4d8199]">search</span>
+                        <input 
+                            name="search"
+                            value="{{ $searchQuery ?? '' }}"
+                            class="w-full pl-10 pr-4 py-3 bg-[#e8eef3] dark:bg-[#1a2632] border border-[#d0e0e7] dark:border-gray-700 rounded-xl text-[#0e171b] dark:text-white placeholder-[#4d8199] focus:ring-2 focus:ring-primary focus:ring-opacity-50 focus:border-primary text-base" 
+                            placeholder="Cari produk, toko, atau lokasi..." 
+                            type="text"
+                            autofocus
+                            x-ref="mobileSearchInput"
+                            x-init="$watch('searchOpen', value => { if(value) setTimeout(() => $refs.mobileSearchInput.focus(), 100) })"
+                        />
+                    </div>
+                    <button type="submit" class="p-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors">
+                        <span class="material-symbols-outlined">search</span>
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Desktop: Full Search Bar -->
+            <form action="{{ route('home') }}" method="GET" class="hidden sm:block">
                 @if(isset($selectedCategory) && $selectedCategory)
                     <input type="hidden" name="category" value="{{ $selectedCategory }}">
                 @endif
