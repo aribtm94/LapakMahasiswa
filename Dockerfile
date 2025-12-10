@@ -83,7 +83,11 @@ RUN mkdir -p /var/www/html/storage/logs \
     && mkdir -p /var/www/html/bootstrap/cache
 
 # Copy nginx configuration
+COPY docker/nginx-main.conf /etc/nginx/nginx.conf
 COPY docker/nginx.conf /etc/nginx/http.d/default.conf
+
+# Ensure nginx can bind to port
+RUN mkdir -p /run/nginx
 
 # Copy supervisor configuration
 COPY docker/supervisord.conf /etc/supervisor.d/app.ini
